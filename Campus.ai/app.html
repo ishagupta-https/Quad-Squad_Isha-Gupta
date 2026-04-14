@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎓 Campus Assistant AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --success: linear-gradient(135deg, #10b981, #059669);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: var(--primary);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .metric {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(45deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        .chat-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            color: #4f46e5;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .chat-messages {
+            height: 450px;
+            overflow-y: auto;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            scrollbar-width: thin;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .message {
+            margin-bottom: 18px;
+            padding: 16px 20px;
+            border-radius: 22px;
+            max-width: 85%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-message {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 8px;
+        }
+        .ai-message {
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #374151;
+            border-bottom-left-radius: 8px;
+        }
+        .chat-input-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        #chatInput {
+            flex: 1;
+            padding: 18px 25px;
+            border: 2px solid #e5e7eb;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        #chatInput:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            transform: translateY(-1px);
+        }
+        .send-btn {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 30px;
+            background: var(--success);
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .send-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .schedule-item, .assignment-item {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 18px;
+            border-radius: 16px;
+            margin: 12px 0;
+            border-left: 5px solid #0ea5e9;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+        }
+        .emoji { font-size: 1.2em; margin-right: 8px; }
+        @media (max-width: 768px) {
+            .dashboard { grid-template-columns: 1fr; gap: 20px; }
+            .chat-input-container { flex-direction: column; }
+            #chatInput { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-graduation-cap"></i> Campus Assistant AI</h1>
+            <p>Your intelligent personal campus companion 🚀</p>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <div class="card">
+                <h3><i class="fas fa-calendar-day"></i> Today's Classes</h3>
+                <div class="metric" id="classesCount">3</div>
+                <div id="todayClasses"></div>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-tasks"></i> Upcoming Assignments</h3>
+                <div class="metric" id="assignmentsCount">2</div>
+                <div id="upcomingAssignments"></div>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Quick Stats</h3>
+                <div style="font-size: 1.8rem; color: #10b981; margin: 20px 0;">
+                    📊 95% Attendance<br>
+                    🎯 3/5 Tasks Done
+                </div>
+                <button class="send-btn" onclick="markAttendance()" style="width: 100%; margin-top: 10px;">
+                    <i class="fas fa-check"></i> Mark Attendance
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Chat -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <i class="fas fa-robot"></i>
+                AI Assistant
+                <span id="status" style="margin-left: auto; font-size: 0.9rem; color: #6b7280;">Online</span>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <span class="emoji">👋</span> Hello! I'm your Campus Assistant. 
+                    Ask me about your <strong>schedule</strong>, <strong>assignments</strong>, 
+                    or say <em>"today's classes"</em>!
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <input type="text" id="chatInput" 
+                       placeholder="💭 What’s on your schedule today? Or ask about assignments..."
+                       autocomplete="off">
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Data
+        const sampleData = {
+            classes: [
+                { name: 'Machine Learning', time: '9:00 AM - 11:00 AM', room: 'A-101', instructor: 'Dr. Smith' },
+                { name: 'Web Development', time: '2:00 PM - 4:00 PM', room: 'B-202', instructor: 'Prof. Lee' },
+                { name: 'Data Structures', time: '4:30 PM - 6:00 PM', room: 'C-305', instructor: 'Dr. Patel' }
+            ],
+            assignments: [
+                { title: 'ML Neural Network Project', course: 'Machine Learning', due: 'Dec 20', priority: 'High' },
+                { title: 'React Website', course: 'Web Development', due: 'Dec 18', priority: 'Medium' },
+                { title: 'Binary Tree Implementation', course: 'Data Structures', due: 'Dec 22', priority: 'Low' }
+            ]
+        };
+
+        // Initialize Dashboard
+        function initDashboard() {
+            document.getElementById('todayClasses').innerHTML = sampleData.classes.map(cls => 
+                `<div class="schedule-item">
+                    <strong>${cls.name}</strong><br>
+                    <small>${cls.time} | ${cls.room} | 👨‍🏫 ${cls.instructor}</small>
+                </div>`
+            ).join('');
+            
+            document.getElementById('upcomingAssignments').innerHTML = sampleData.assignments.map(ass => 
+                `<div class="assignment-item">
+                    <strong>${ass.title}</strong><br>
+                    <small>${ass.course} | 📅 ${ass.due} | ${ass.priority}</small>
+                </div>`
+            ).join('');
+        }
+
+        // AI Chat Brain
+        const aiResponses = {
+            schedule: "📅 **Today's Schedule:**\n\n" + 
+                     sampleData.classes.map(cls => `• ${cls.name}\n  ${cls.time} | ${cls.room}`).join('\n\n'),
+            assignments: "📚 **Upcoming Assignments:**\n\n" + 
+                        sampleData.assignments.map(ass => `• ${ass.title}\n  ${ass.course} | 📅 ${ass.due}`).join('\n\n'),
+            attendance: "✅ **Attendance marked successfully!**\n\nAll classes for today have been logged. Great job staying consistent! 🎉",
+            default: "🤖 **How can I help?**\n\nTry asking:\n• 'What's my schedule?'\n• 'Show assignments'\n• 'Mark attendance'\n• 'Today's classes'"
+        };
+
+        function getAIResponse(message) {
+            const msg = message.toLowerCase();
+            if (msg.includes('schedule') || msg.includes('class') || msg.includes('today')) return aiResponses.schedule;
+            if (msg.includes('assignment') || msg.includes('homework') || msg.includes('due')) return aiResponses.assignments;
+            if (msg.includes('attendance') || msg.includes('present')) return aiResponses.attendance;
+            return aiResponses.default;
+        }
+
+        // Chat Functions
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Simulate typing
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            setTimeout(() => {
+                const response = getAIResponse(message);
+                addMessage(response, 'ai');
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+            }, 800 + Math.random() * 1200);
+        }
+
+        function addMessage(text, type) {
+            const messages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type === 'user' ? 'user-message' : 'ai-message'}`;
+            messageDiv.innerHTML = text.replace(/\n/g, '<br>');
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function markAttendance() {
+            addMessage("✅ Attendance marked for all today's classes!", 'ai');
+        }
+
+        // Event Listeners
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Initialize
+        initDashboard();
+        setInterval(() => {
+            // Auto-refresh effect
+            const counts = document.querySelectorAll('.metric');
+            counts.forEach(count => {
+                count.style.transform = 'scale(1.05)';
+                setTimeout(() => count.style.transform = 'scale(1)', 200);
+            });
+        }, 30000);
+    </script>
+</body>
+</html>
