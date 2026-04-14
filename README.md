@@ -61,7 +61,7 @@ Chat system dynamically updates UI with responses
 
 Download or clone the repository:
 
-git clone https://github.com/your-username/campus-assistant-ai.git
+git clone https://github.com/ishagupta-https/campus-assistant-ai.git
 Open the project folder
 Run the app:
 Simply open index.html in your browser
