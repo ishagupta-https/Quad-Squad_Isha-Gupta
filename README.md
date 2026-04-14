@@ -87,8 +87,7 @@ This project is open-source and available under the MIT License.
 
 💡 Author
 
-Developed by Your Name
+Developed by Isha Gupta
 🎯 Passionate about AI & Web Development
 
 
-Or create a project description + PPT 👍
