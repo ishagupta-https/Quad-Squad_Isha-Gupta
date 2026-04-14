@@ -1,7 +1,7 @@
 # Campus_Asst_AI
 🎓 Campus Assistant AI
 video prototype of my project
-https://drive.google.com/drive/u/2/home
+https://drive.google.com/file/d/1oKi-3olsbrqtbBKOyV0zd-59NNeGzLsH/view?usp=sharing
 
 A smart and interactive Campus Assistant Web App designed to help students manage their daily academic activities like schedules, assignments, and attendance — all in one place.
 
