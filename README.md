@@ -44,6 +44,7 @@ JavaScript (Vanilla JS)
 Font Awesome (Icons)
 
 📂 Project Structure
+
 Campus-Assistant-AI/
 │
 ├── index.html   # Main application file
