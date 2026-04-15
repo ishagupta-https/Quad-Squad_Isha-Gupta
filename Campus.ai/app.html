@@ -555,6 +555,77 @@
             margin-top: 20px;
         }
 
+        /* Attendance Styles */
+        .attendance-percentage {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            background: var(--success-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .attendance-breakdown {
+            margin: 20px 0;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .attendance-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--item-border);
+        }
+
+        .attendance-item:last-child {
+            border-bottom: none;
+        }
+
+        .attendance-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .status-present {
+            color: var(--success-primary);
+        }
+
+        .status-absent {
+            color: #ef4444;
+        }
+
+        .attendance-actions {
+            margin-top: 20px;
+        }
+
+        .mark-attendance-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .mark-attendance-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .mark-attendance-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
     </style>
 </head>
 
@@ -635,6 +706,23 @@
             </div>
 
             <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Attendance Tracker</h3>
+                <div class="attendance-percentage" id="attendancePercentage">95.6%</div>
+                <div class="attendance-breakdown">
+                    <div id="attendanceStats">43/45 classes attended</div>
+                </div>
+                <div id="todayAttendance"></div>
+                <div class="attendance-actions">
+                    <button class="mark-attendance-btn" onclick="markTodayAttendance()">
+                        <i class="fas fa-check"></i> Mark Today's Attendance
+                    </button>
+                    <button class="send-btn" onclick="viewAttendanceDetails()" style="padding: 12px 20px;">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
                 <h3><i class="fas fa-upload"></i> Submit Assignment</h3>
                 <form id="submissionForm" class="submission-form">
                     <div class="form-group">
@@ -677,7 +765,7 @@
                 <div class="message ai-message">
                     <span class="emoji">👋</span> Hello! I'm your Campus Assistant.
                     Ask me about your <strong>schedule</strong>, <strong>assignments</strong>,
-                    or say <em>"today's classes"</em>!
+                    <strong>attendance</strong>, or say <em>"today's classes"</em>!
                 </div>
             </div>
 
@@ -717,15 +805,20 @@
         // Sample Data
         const sampleData = {
             classes: [
-                { name: 'Machine Learning', time: '9:00 AM - 11:00 AM', room: 'A-101', instructor: 'Dr. Smith' },
-                { name: 'Web Development', time: '2:00 PM - 4:00 PM', room: 'B-202', instructor: 'Prof. Lee' },
-                { name: 'Data Structures', time: '4:30 PM - 6:00 PM', room: 'C-305', instructor: 'Dr. Patel' }
+                { name: 'Machine Learning', time: '9:00 AM - 11:00 AM', room: 'A-101', instructor: 'Dr. Smith', attended: true },
+                { name: 'Web Development', time: '2:00 PM - 4:00 PM', room: 'B-202', instructor: 'Prof. Lee', attended: false },
+                { name: 'Data Structures', time: '4:30 PM - 6:00 PM', room: 'C-305', instructor: 'Dr. Patel', attended: true }
             ],
             assignments: [
                 { title: 'ML Neural Network Project', course: 'Machine Learning', due: 'Dec 20', priority: 'High' },
                 { title: 'React Website', course: 'Web Development', due: 'Dec 18', priority: 'Medium' },
                 { title: 'Binary Tree Implementation', course: 'Data Structures', due: 'Dec 22', priority: 'Low' }
-            ]
+            ],
+            attendance: {
+                totalClasses: 45,
+                attendedClasses: 43,
+                percentage: 95.6
+            }
         };
 
         // Initialize Dashboard
@@ -743,6 +836,26 @@
                     <small>${ass.course} | 📅 ${ass.due} | ${ass.priority}</small>
                 </div>`
             ).join('');
+
+            updateAttendanceDisplay();
+        }
+
+        function updateAttendanceDisplay() {
+            document.getElementById('attendancePercentage').textContent = `${sampleData.attendance.percentage}%`;
+            document.getElementById('attendanceStats').textContent = `${sampleData.attendance.attendedClasses}/${sampleData.attendance.totalClasses} classes attended`;
+
+            document.getElementById('todayAttendance').innerHTML = sampleData.classes.map(cls =>
+                `<div class="attendance-item">
+                    <div>
+                        <strong>${cls.name}</strong><br>
+                        <small>${cls.time}</small>
+                    </div>
+                    <div class="attendance-status ${cls.attended ? 'status-present' : 'status-absent'}">
+                        <i class="fas fa-${cls.attended ? 'check-circle' : 'times-circle'}"></i>
+                        ${cls.attended ? 'Present' : 'Absent'}
+                    </div>
+                </div>`
+            ).join('');
         }
 
         // AI Chat Brain
@@ -751,8 +864,10 @@
                 sampleData.classes.map(cls => `• ${cls.name}\n  ${cls.time} | ${cls.room}`).join('\n\n'),
             assignments: "📚 **Upcoming Assignments:**\n\n" +
                 sampleData.assignments.map(ass => `• ${ass.title}\n  ${ass.course} | 📅 ${ass.due}`).join('\n\n'),
-            attendance: "✅ **Attendance marked successfully!**\n\nAll classes for today have been logged. Great job staying consistent! 🎉",
-            default: "🤖 **How can I help?**\n\nTry asking:\n• 'What's my schedule?'\n• 'Show assignments'\n• 'Mark attendance'\n• 'Today's classes'"
+            attendance: `📊 **Attendance Status:**\n\nCurrent attendance: **${sampleData.attendance.percentage}%**\n\nToday's classes:\n` +
+                sampleData.classes.map(cls => `• ${cls.name}: ${cls.attended ? '✅ Present' : '❌ Absent'}`).join('\n') +
+                `\n\nOverall: ${sampleData.attendance.attendedClasses}/${sampleData.attendance.totalClasses} classes attended`,
+            default: "🤖 **How can I help?**\n\nTry asking:\n• 'What's my schedule?'\n• 'Show assignments'\n• 'What's my attendance?'\n• 'Mark attendance'\n• 'Today's classes'"
         };
 
         function getAIResponse(message) {
@@ -797,6 +912,31 @@
 
         function markAttendance() {
             addMessage("✅ Attendance marked for all today's classes!", 'ai');
+        }
+
+        function markTodayAttendance() {
+            // Mark all today's classes as attended
+            sampleData.classes.forEach(cls => {
+                if (!cls.attended) {
+                    cls.attended = true;
+                    sampleData.attendance.attendedClasses++;
+                }
+            });
+
+            // Recalculate percentage
+            sampleData.attendance.percentage = ((sampleData.attendance.attendedClasses / sampleData.attendance.totalClasses) * 100).toFixed(1);
+
+            updateAttendanceDisplay();
+
+            addMessage("✅ **Today's attendance marked successfully!**\n\nAll classes for today have been logged. Keep up the great work! 📚", 'ai');
+        }
+
+        function viewAttendanceDetails() {
+            const details = sampleData.classes.map(cls =>
+                `• ${cls.name}: ${cls.attended ? '✅ Present' : '❌ Absent'}`
+            ).join('\n');
+
+            addMessage(`📊 **Attendance Details:**\n\n${details}\n\n**Overall:** ${sampleData.attendance.percentage}% (${sampleData.attendance.attendedClasses}/${sampleData.attendance.totalClasses} classes)`, 'ai');
         }
 
         // Event Listeners
