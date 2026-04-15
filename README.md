@@ -1,94 +1,127 @@
-# Campus_Asst_AI
-🎓 Campus Assistant AI
-video prototype of my project
+# 🎓 Campus Assistant AI
+
+this is my video prototype for round 2 :- 
 https://drive.google.com/file/d/1oKi-3olsbrqtbBKOyV0zd-59NNeGzLsH/view?usp=sharing
 
-A smart and interactive Campus Assistant Web App designed to help students manage their daily academic activities like schedules, assignments, and attendance — all in one place.
+A modern, interactive **Campus Assistant Web App** designed to help students manage their daily academic life with ease.
+It includes a smart dashboard, assignment tracking, and an AI-powered chat assistant.
 
-🚀 Features
+---
 
-✨ Dashboard Overview
+## 🚀 Features
 
-View today's classes
-Track upcoming assignments
-Quick stats (attendance & tasks)
+### 📅 Dashboard
 
-💬 AI Chat Assistant
+* View **today’s classes**
+* Track **upcoming assignments**
+* Quick stats like:
 
-Ask about schedule, assignments, or attendance
-Instant smart responses
-Simple keyword-based AI system
+  * Attendance percentage
+  * Task completion progress
 
-📅 Class Management
+### 🤖 AI Chat Assistant
 
-Displays subject, time, room, and instructor
+* Ask about:
 
-📚 Assignment Tracker
+  * 📘 Schedule
+  * 📝 Assignments
+  * ✅ Attendance
+* Instant responses with a clean chat interface
 
-Shows due dates and priority levels
+### 🎨 UI/UX
 
-✅ Attendance Marker
+* Beautiful **glassmorphism design**
+* 🌙 **Dark/Light mode toggle**
+* Fully **responsive layout**
+* Smooth animations & transitions
 
-One-click attendance logging
+### ⚡ Interactive Elements
 
-🎨 Modern UI Design
+* Live chat simulation
+* Auto-refresh UI effects
+* Dynamic rendering of data
 
-Responsive layout
-Smooth animations & hover effects
-Glassmorphism-style cards
+---
 
-🛠️ Tech Stack
-HTML5
-CSS3 (Advanced styling + animations)
-JavaScript (Vanilla JS)
-Font Awesome (Icons)
+## 🛠️ Tech Stack
 
-📂 Project Structure
+* **HTML5**
+* **CSS3** (Custom properties, gradients, responsive design)
+* **JavaScript (Vanilla JS)**
+* **Font Awesome Icons**
 
+---
+
+## 📂 Project Structure
+
+```
 Campus-Assistant-AI/
 │
-├── index.html   # Main application file
-├── README.md    # Project documentation
+├── index.html      # Main application file
+├── README.md       # Project documentation
+```
 
-⚙️ How It Works
-Dashboard loads sample data (classes & assignments)
-AI assistant processes user input using keyword matching:
-"schedule" → shows classes
-"assignment" → shows tasks
-"attendance" → marks attendance
-Chat system dynamically updates UI with responses
+---
 
-▶️ How to Run
+## ▶️ How to Run
 
-Download or clone the repository:
+1. Download or clone the repository:
 
-git clone https://github.com/ishagupta-https/campus-assistant-ai.git
-Open the project folder
-Run the app:
-Simply open index.html in your browser
-📸 Preview
-Dashboard with class schedule
-Assignment tracker
-AI chat interface
+   ```bash
+   git clone https://github.com/ishagupta-https/campus-assistant-ai.git
+   ```
 
-🔮 Future Improvements
-Real backend integration (Node.js / Firebase)
-User login system
-Database for real student data
-AI upgrade using NLP APIs
-Notifications & reminders
-🤝 Contributing
+2. Open the project folder:
 
-Feel free to fork this project and improve it 🚀
-Pull requests are welcome!
+   ```bash
+   cd campus-assistant-ai
+   ```
 
-📄 License
+3. Run the app:
 
-This project is open-source and available under the MIT License.
+   * Simply open `index.html` in your browser
 
-💡 Author
+---
 
-Developed by Isha Gupta
-🎯 Passionate about AI & Web Development
+## 💡 Usage Examples
 
+Try typing in the chat:
+
+* `"today's classes"`
+* `"show assignments"`
+* `"mark attendance"`
+* `"what's my schedule?"`
+
+---
+
+## 📸 Preview
+
+* Dashboard with class & assignment cards
+* AI chat interface
+* Theme toggle (light/dark)
+
+---
+
+## 🔮 Future Improvements
+
+* 🔗 Backend integration (Node.js / Firebase)
+* 🧠 Real AI integration (OpenAI API)
+* 📱 Mobile app version
+* 🔔 Notifications & reminders
+* 👤 User authentication
+
+---
+
+## 👨‍💻 Author
+
+**Isha gupta**
+
+* GitHub: [https://github.com/ishagupta-https]
+* LinkedIn: [https://www.linkedin.com/in/isha-gupta-a05a80383?utm_source=share_via&utm_content=profile&utm_medium=member_android]
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
 
