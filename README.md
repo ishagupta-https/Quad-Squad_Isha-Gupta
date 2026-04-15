@@ -1,6 +1,7 @@
 # 🎓 Campus Assistant AI
 
 here is my video prototype:- https://drive.google.com/file/d/1oKi-3olsbrqtbBKOyV0zd-59NNeGzLsH/view?usp=sharing
+
 An all-in-one **Campus Management Web App** that helps students and faculty manage schedules, assignments, and daily academic tasks with an integrated AI assistant.
 
 ---
