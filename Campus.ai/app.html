@@ -436,6 +436,125 @@
             border-color: transparent;
         }
 
+        /* Form Styles */
+        .form-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--card-border);
+            margin-bottom: 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--item-bg);
+            border: 1px solid var(--item-border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--input-border);
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-main);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px var(--btn-hover-shadow);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .form-actions button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--item-bg);
+            color: var(--text-main);
+            border: 2px solid var(--item-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .submission-form {
+            margin-top: 20px;
+        }
+
     </style>
 </head>
 
@@ -448,6 +567,57 @@
         <div class="header">
             <h1><i class="fas fa-graduation-cap"></i> Campus Assistant AI</h1>
             <p>Your intelligent personal campus companion 🚀</p>
+        </div>
+
+        <!-- Auth Forms -->
+        <div class="form-container">
+            <div class="form-tabs">
+                <button class="tab-btn active" onclick="showForm('login')">Login</button>
+                <button class="tab-btn" onclick="showForm('register')">Register</button>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="student@university.edu" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Login</button>
+                    <button type="button" class="btn-secondary" onclick="showForm('register')">Need Account?</button>
+                </div>
+            </form>
+
+            <form id="registerForm" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" placeholder="student@university.edu" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerRole">Role</label>
+                    <select id="registerRole" required>
+                        <option value="">Select your role</option>
+                        <option value="student">Student</option>
+                        <option value="faculty">Faculty</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Register</button>
+                    <button type="button" class="btn-secondary" onclick="showForm('login')">Have Account?</button>
+                </div>
+            </form>
         </div>
 
         <!-- Dashboard -->
@@ -465,14 +635,33 @@
             </div>
 
             <div class="card">
-                <h3><i class="fas fa-chart-line"></i> Quick Stats</h3>
-                <div style="font-size: 1.8rem; color: #10b981; margin: 20px 0;">
-                    📊 95% Attendance<br>
-                    🎯 3/5 Tasks Done
-                </div>
-                <button class="send-btn" onclick="markAttendance()" style="width: 100%; margin-top: 10px;">
-                    <i class="fas fa-check"></i> Mark Attendance
-                </button>
+                <h3><i class="fas fa-upload"></i> Submit Assignment</h3>
+                <form id="submissionForm" class="submission-form">
+                    <div class="form-group">
+                        <label for="assignmentTitle">Assignment Title</label>
+                        <input type="text" id="assignmentTitle" placeholder="e.g., ML Project Phase 1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseName">Course</label>
+                        <select id="courseName" required>
+                            <option value="">Select course</option>
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Data Structures">Data Structures</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="submissionFile">Upload File</label>
+                        <input type="file" id="submissionFile" accept=".pdf,.doc,.docx,.zip">
+                    </div>
+                    <div class="form-group">
+                        <label for="submissionNotes">Notes (Optional)</label>
+                        <textarea id="submissionNotes" placeholder="Any additional notes..."></textarea>
+                    </div>
+                    <button type="submit" class="send-btn" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Submit Assignment
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -515,9 +704,9 @@
                     <p>&copy; 2024 Campus Assistant AI. All rights reserved.</p>
                 </div>
                 <div class="footer-social">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="https://github.com/ishagupta-https"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/isha-gupta-a05a80383?utm_source=share_via&utm_content=profile&utm_medium=member_android"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/Ishuuuu__70"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
         </div>
@@ -628,6 +817,58 @@
         function toggleTheme() {
             document.body.classList.toggle("dark");
         }
+
+        // Form Functions
+        function showForm(formType) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+
+            if (formType === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabBtns[0].classList.add('active');
+                tabBtns[1].classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabBtns[0].classList.remove('active');
+                tabBtns[1].classList.add('active');
+            }
+        }
+
+        // Form Submissions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simulate login
+            addMessage(`🔐 **Login Successful!**\n\nWelcome back, ${email.split('@')[0]}! 🎉`, 'ai');
+            this.reset();
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const role = document.getElementById('registerRole').value;
+            
+            // Simulate registration
+            addMessage(`✅ **Registration Successful!**\n\nWelcome to Campus Assistant, ${name}! Your account as ${role} has been created. 📚`, 'ai');
+            this.reset();
+        });
+
+        document.getElementById('submissionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('assignmentTitle').value;
+            const course = document.getElementById('courseName').value;
+            const file = document.getElementById('submissionFile').files[0];
+            
+            // Simulate submission
+            addMessage(`📤 **Assignment Submitted!**\n\n**${title}** for ${course} has been submitted successfully. ${file ? `File: ${file.name}` : ''} ✅`, 'ai');
+            this.reset();
+        });
     </script>
 </body>
 
